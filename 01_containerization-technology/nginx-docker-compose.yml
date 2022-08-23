@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  beetroot:
+    build: .
+  webserver:
+    build: './nginx'
+    ports:
+      - '80:80'

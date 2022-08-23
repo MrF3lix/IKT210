@@ -6,6 +6,4 @@ services:
   webserver:
     build: './apache'
     ports:
-      - '80:8081'
-    environment:
-      - APACHE_HTTP_PORT_NUMBER=8081
+      - '80:8080'

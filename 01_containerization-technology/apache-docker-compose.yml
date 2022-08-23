@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  beetroot:
+    build: .
+  webserver:
+    build: './apache'
+    ports:
+      - '80:8081'
+    environment:
+      - APACHE_HTTP_PORT_NUMBER=8081

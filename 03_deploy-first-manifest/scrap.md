@@ -89,6 +89,13 @@ This creates an HTTP Get request to the / route. If it would return any other st
 12. Create deployment with caddy proxy
 13. Create deployment with nginx proxy
 
+```bash
+kubectl apply -f ./nginx/deployment.yaml
+kubectl apply -f ./nginx/service.yaml
+
+kubectl port-forward service/nginx 3000:80 -n lab02
+```
+
 ## Problems
 
 - Image could not be pulled. Pod shows `ImagePullBackOff` state.
@@ -98,3 +105,4 @@ This creates an HTTP Get request to the / route. If it would return any other st
   - Created a repository in github with an action to build and push the image
 - port-forward didn't work on the service. Only on the deployment.
   - Issue was the app selector in the service.
+- Apache couldn't start because port 8080 was used already by the beetroot application.

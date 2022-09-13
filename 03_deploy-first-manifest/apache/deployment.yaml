@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beetroot
+  namespace: lab02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beetroot
+  template:
+    metadata:
+      labels:
+        app: beetroot
+    spec:
+      containers:
+      - name: beetroot
+        image: mrfelix/beetroot:latest
+        ports:
+        - containerPort: 3000 # TODO: make sure the ports work
+      - name: apache
+        image mrfelix/beetroot-apache:latest
+        - ports: 80:8080

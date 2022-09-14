@@ -86,8 +86,24 @@ This creates an HTTP Get request to the / route. If it would return any other st
 
 
 11. Create deployment with apache proxy
+
+```bash
+kubectl apply -f ./apache/deployment.yaml
+kubectl apply -f ./apache/service.yaml
+
+kubectl port-forward service/apache 3000:80 -n lab02
+```
+
 12. Create deployment with caddy proxy
-13. Create deployment with nginx proxy
+
+```bash
+kubectl apply -f ./caddy/deployment.yaml
+kubectl apply -f ./caddy/service.yaml
+
+kubectl port-forward service/caddy 3000:80 -n lab02
+```
+
+13.  Create deployment with nginx proxy
 
 ```bash
 kubectl apply -f ./nginx/deployment.yaml

@@ -1,0 +1,3 @@
+:80 {
+    reverse_proxy beetroot:8080
+}

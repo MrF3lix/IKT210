@@ -9,4 +9,3 @@ spec:
     app: beetroot
   ports:
     - port: 80
-

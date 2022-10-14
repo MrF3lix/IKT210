@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: lab03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      containers:
+      - name: ghost
+        image: ghost:5.17
+        env:
+        - name: url
+          valueFrom:
+            configMapKeyRef:
+              name: ghost-config
+              key: url
+        - name: database__connection__host
+          valueFrom:
+            configMapKeyRef:
+              name: ghost-config
+              key: database__connection__host
+        - name: database__connection__user
+          valueFrom:
+            configMapKeyRef:
+              name: ghost-config
+              key: database__connection__user
+        - name: database__connection__password
+          valueFrom:
+            configMapKeyRef:
+              name: ghost-config
+              key: database__connection__password
+        - name: database__connection__database
+          valueFrom:
+            configMapKeyRef:
+              name: ghost-config
+              key: database__connection__database
+        - name: NODE_ENV
+          value: development
+        - name: database__debug
+          value: 'false'
+        - name: database__client
+          value: mysql
+        ports:
+        - containerPort: 2368
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 2368
+          initialDelaySeconds: 100
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 2368
+          initialDelaySeconds: 3
+          periodSeconds: 3
+      - name: nginx
+        image: mrfelix/nginx:latest
+        ports:
+        - containerPort: 80
+        

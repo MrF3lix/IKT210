@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ghost-config
+  namespace: lab03
+data:
+  MYSQL_ROOT_PASSWORD: password
+  url: 'http://localhost:3000/'
+  database__connection__host: 'mysql'
+  database__connection__user: root
+  database__connection__password: password
+  database__connection__database: ghost

@@ -31,3 +31,14 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ```
 Unable to create application: application spec for Argocd is invalid: InvalidSpecError: repository not accessible: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp: lookup argocd-repo-server: i/o timeout"
 ```
+
+
+
+
+## New Setps
+
+
+- Reset Cluster
+- Install cluster again
+- Setup Arogcd
+- Get Default credentails: bL8HwaEwc3cx1soD

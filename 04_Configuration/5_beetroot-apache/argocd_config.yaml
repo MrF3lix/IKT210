@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+spec:
+  project: default
+  source:
+    repoURL: >-
+      git@gitlab.internal.uia.no:ikt210-g-22h-project2/LabGroup13/lab04-argocd-sample.git
+    path: kustomize
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: lab04
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+

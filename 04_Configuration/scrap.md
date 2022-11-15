@@ -35,10 +35,45 @@ Unable to create application: application spec for Argocd is invalid: InvalidSpe
 
 
 
-## New Setps
+## New Steps
 
 
 - Reset Cluster
 - Install cluster again
 - Setup Arogcd
 - Get Default credentails: bL8HwaEwc3cx1soD
+- Add sample application
+- Change service to NodePort: `kubectl patch svc argocd-server -n argocd --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"}]'`
+- Get port with `kubectl get svc -n argocd`
+- Access via https://10.225.151.33:31284/
+
+`
+### Kustomize Argocd
+
+- Create Repository in gitlab
+- Add yaml manifests
+- Push
+- Create a new definition in argocd
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+spec:
+  destination:
+    name: ''
+    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: lab04-argocd/kustomize
+    repoURL: >-
+      git@gitlab.internal.uia.no:ikt210-g-22h-project2/LabGroup13/lab04-argocd.git
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions: []
+```

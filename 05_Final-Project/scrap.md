@@ -2,6 +2,7 @@
 
 ## VM's
 
+```
 +-----------------------------------------+------------------------------------------------------+
 | Name                                    | Networks                                             |
 +-----------------------------------------+------------------------------------------------------+
@@ -9,6 +10,13 @@
 | IKT210-G-22H-Lab Group 13-project-node2 | IKT210-G-22H-g13-prod=10.225.150.5, 192.210.13.29    |
 | IKT210-G-22H-Lab Group 13-project-node1 | IKT210-G-22H-g13-prod=10.225.149.133, 192.210.13.170 |
 +-----------------------------------------+------------------------------------------------------+
+```
+
+## Applications
+
+- ArgoCD: https://10.225.149.133:31549/
+- Grafana: http://10.225.149.133:30349/
+- Prometheus: http://10.225.149.133:30236
 
 ## Decisions
 
@@ -145,7 +153,7 @@
     ```bash
     kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
     ```
-18. Access Argocd via https://10.225.149.133:32213/
+18. Access Argocd via https://10.225.149.133:31549/
 
 19. Create Argocd application in Argocd
 

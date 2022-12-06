@@ -320,6 +320,7 @@
 
 ## Steps 6.12 - Assignment-05-base Application
 
+1. Create repository in gitlab https://gitlab.internal.uia.no/ikt210-g-22h-project2/LabGroup13/assignment-05-base/
 1. Create dockerfile
     ```dockerfile
     FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
@@ -376,6 +377,7 @@ TODO:
 
 ## Steps 6.12 - Betauia.net
 
+1. Create separate repository in gitlab
 1. Build docker images and push to gitlab registry
     ```bash
 
@@ -390,7 +392,8 @@ TODO:
     ```bash
     kubectl create secret docker-registry regcred --docker-server=registry.internal.uia.no --docker-username=felixmsa --docker-password=glpat-JRvuGjZqsatSyfUsjD4L --docker-email=felixmsa@uia.no -n assignment-05
     ```
-
+3. Create Kustomize files (see gitlab repo)
+4. Add to argocd
 
 ## Problems
 

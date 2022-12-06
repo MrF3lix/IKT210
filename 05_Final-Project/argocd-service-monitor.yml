@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-metrics-servicemonitor
+  namespace: monitoring
+  labels:
+    app: argocd-metrics-servicemonitor
+spec:
+  selector:
+    matchLabels:
+      app: argocd-metrics
+  namespaceSelector:
+    matchNames:
+    - argocd
+  endpoints:
+  - targetPort: 8082
+    path: /metrics
+    interval: 15s

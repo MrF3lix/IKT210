@@ -15,8 +15,24 @@
 ## Applications
 
 - ArgoCD: https://10.225.149.133:31549/
+  - User: admin
+  - Password: jpeoYVdQa51oCVCw
 - Grafana: http://10.225.149.133:30349/
+  - User: 
+  - Password:
 - Prometheus: http://10.225.149.133:30236
+  - User:
+  - Password:
+- PWPush: http://10.225.149.133:30783
+  - User:
+  - Password:
+- Kuma: http://10.225.149.133:30814
+  - User: admin
+  - Password: K3HnTeGzyfo79itXz2N7
+
+- Assignment-05-Base: http://10.225.149.133:30220
+  - User: felixmsa@uia.no
+  - Password Test123#
 
 ## Decisions
 
@@ -25,7 +41,7 @@
 - ArgoCD for application deployment
 - Prometheus & Grafana for monitoring => https://github.com/prometheus-operator/kube-prometheus
 
-## Steps
+## Steps 29.11
 
 1. Add SSH certificates to VM's
    ```bash
@@ -216,7 +232,164 @@
     ```
 25. Log into grafana and change default admin password to: 7aS6r4mVjigX6LT
 26. Compute Resources Dashboard: http://10.225.149.133:30349/d/efa86fd1d0c121a26444b636a3f509a8/kubernetes-compute-resources-cluster?orgId=1&refresh=10s
-27. 
+
+
+## Steps 6.12
+
+1. Create Repository for PwPush Deployment files https://gitlab.internal.uia.no/ikt210-g-22h-project2/LabGroup13/password-pusher-deployment
+2. Add Deployment File
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+    name: pwpush
+    spec:
+    replicas: 1
+    selector:
+        matchLabels:
+        app: pwpush
+    template:
+        metadata:
+        labels:
+            app: pwpush
+        spec:
+        containers:
+            - name: pwpush
+            image: pglombardo/pwpush-ephemeral:release
+            ports:
+            - containerPort: 5100
+    ```
+3. Add Service File
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+    name: pwpush
+    spec:
+    type: NodePort
+    selector:
+        app: pwpush
+    ports:
+        - port: 5100
+        targetPort: 5100
+    ```
+4. Add to ArgoCD
+5. Test Page: http://10.225.149.133:30783/
+6. Create Repository for Uptime Kuma Deployment files https://gitlab.internal.uia.no/ikt210-g-22h-project2/LabGroup13/uptime-kuma-deployment
+7. Add Deployment File
+    ```yaml
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+    name: uptime-kuma
+    spec:
+    replicas: 1
+    selector:
+        matchLabels:
+        app: uptime-kuma
+    template:
+        metadata:
+        labels:
+            app: uptime-kuma
+        spec:
+        containers:
+            - name: uptime-kuma
+            image: louislam/uptime-kuma:1.18.5-alpine
+            ports:
+            - containerPort: 3001
+    ```
+8. Add Service File
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+    name: uptime-kuma
+    spec:
+    type: NodePort
+    selector:
+        app: uptime-kuma
+    ports:
+        - port: 3001
+        targetPort: 3001
+    ```
+9. Add to ArgoCD
+10. Test Page: http://10.225.149.133:30814/
+11. Create Account Kuma
+12. Login to Kuma
+13. Add Monitor for ArgoCD, Grafana, Password Pusher, Prometheus
+
+## Steps 6.12 - Assignment-05-base Application
+
+1. Create dockerfile
+    ```dockerfile
+    FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+    WORKDIR /app
+
+    COPY . ./
+    RUN dotnet restore
+    RUN dotnet publish -c Debug -o out
+
+    FROM mcr.microsoft.com/dotnet/aspnet:5.0
+    WORKDIR /app
+    COPY --from=build-env /app/out .
+    EXPOSE 80
+    ENTRYPOINT ["dotnet", "Site.dll"]
+    ```
+2. Login to docker registry
+    ```bash
+    docker login registry.internal.uia.no --username felixmsa
+    ```
+3. Build docker image
+    ```bash
+    docker build . -t registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/assignment-05-base:latest
+    docker buildx build --platform linux/amd64 . -t registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/assignment-05-base:latest
+    ```
+4. Push image to docker registry
+    ```bash
+    docker push registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/assignment-05-base:latest
+    ```
+5. Add docker registry authentication to cluster
+   1. Create Access Token
+   2. Create secret
+    ```bash
+    kubectl create secret docker-registry regcred --docker-server=registry.internal.uia.no --docker-username=felixmsa --docker-password=glpat-JRvuGjZqsatSyfUsjD4L --docker-email=felixmsa@uia.no -n assignment-05
+    ```
+6. NOT WORKING: Create Gitlab CI to automatically push to registry when application changes
+7. NOT WORKING: Update kustomize image version after push to registry to update cluster
+8. Create Kustomize configuration => https://gitlab.internal.uia.no/ikt210-g-22h-project2/LabGroup13/assignment-05-base/-/tree/master/kustomize
+9.  Add init container to wait for database start
+    ```yaml
+    initContainers:
+    - name: postgres-listener
+        image: postgres:15.1
+        imagePullPolicy: IfNotPresent
+        command: [
+            "sh", "-c",
+            "until pg_isready -h database -p 5432; do echo waiting for database; sleep 2; done;"
+            ]
+    ```
+
+TODO:
+- Store Database password in another config
+- Use PVC for database so it is actually persistent
+
+
+## Steps 6.12 - Betauia.net
+
+1. Build docker images and push to gitlab registry
+    ```bash
+
+    docker buildx build --platform linux/amd64 ./betauia -t registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/betauia.net/backend:latest
+    docker push registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/betauia.net/backend:latest
+
+    docker buildx build --platform linux/amd64 ./frontend -t registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/betauia.net/frontend:latest
+    docker push registry.internal.uia.no/ikt210-g-22h-project2/labgroup13/betauia.net/frontend:latest
+
+    ```
+2. Create secret to pull images correctly
+    ```bash
+    kubectl create secret docker-registry regcred --docker-server=registry.internal.uia.no --docker-username=felixmsa --docker-password=glpat-JRvuGjZqsatSyfUsjD4L --docker-email=felixmsa@uia.no -n assignment-05
+    ```
 
 
 ## Problems
@@ -224,3 +397,11 @@
 1. We first choose to use cilium for the networking. Unfortunately it didn't work as expected and to make it work we would need to recompile the kernel and enable BPF: https://docs.cilium.io/en/v1.12/operations/system_requirements/#admin-system-reqs.
 2. Because we tried to use cilium the VM's had a network interface configured `cilium_vxlan` and `cilium_net`. While installing Flannel we had a problem assigning IP addresses because there were the previously configured interfaces. To fix this we ran `ip link delete cilium_vxlan` and `ip link delete cilium_net`
 3. Cannot create argocd application within argocd. Error message: Unable to create application: error creating application: the server could not find the requested resource (post applications.argoproj.io)
+
+
+## Problem 6.12
+
+1. Couldn't access gitlab docker registry. => Create Secret in cluster `kubectl create secret docker-registry`
+1. Docker images were build on an amd64 platform. Using `docker buildx build --platform linux/amd64` fixed the problem. 
+2. Database is not persistent => No PVC created for it yet.
+3. Could not run the docker build for the betauia.net frontend, `yarn install` failes during image building.

@@ -14,25 +14,46 @@
 
 ## Applications
 
-- ArgoCD: https://10.225.149.133:31549/
+- ArgoCD: 
+  - https://10.225.149.133:31549/
   - User: admin
   - Password: jpeoYVdQa51oCVCw
-- Grafana: http://10.225.149.133:30349/
+
+
+- Grafana: 
+  - http://10.225.149.133:30349/
   - User: 
   - Password:
-- Prometheus: http://10.225.149.133:30236
+
+
+- Prometheus: 
+  - http://10.225.149.133:30236
   - User:
   - Password:
-- PWPush: http://10.225.149.133:30783
+
+
+- PWPush: 
+  - http://10.225.149.133:30783
   - User:
   - Password:
-- Kuma: http://10.225.149.133:30814
+
+
+- Kuma: 
+  - http://10.225.149.133:30814
   - User: admin
   - Password: K3HnTeGzyfo79itXz2N7
 
-- Assignment-05-Base: http://10.225.149.133:30220
+
+- Assignment-05-Base: 
+  - http://10.225.149.133:30220
   - User: felixmsa@uia.no
   - Password Test123#
+
+
+- Betauia.net
+  - ??
+  - User:
+  - Password:
 
 ## Decisions
 
@@ -408,3 +429,19 @@ TODO:
 1. Docker images were build on an amd64 platform. Using `docker buildx build --platform linux/amd64` fixed the problem. 
 2. Database is not persistent => No PVC created for it yet.
 3. Could not run the docker build for the betauia.net frontend, `yarn install` failes during image building.
+
+
+
+## TODO 8.12
+
+- [ ] Assignment-05-base: Postgres Persistence => PVC
+- [ ] Assignment-05-base: Redis Persistence => PVC
+- [ ] Assignment-05-base: Update Dependencies
+- [ ] Assignment-05-base: Setup CI to push images and update argocd
+- [ ] Assignment-05-base: Use secrets to store db user and password
+- [ ] betauia: Update Dependencies
+- [ ] betauia: Fix yarn build
+- [ ] betauia: Publish frontend docker image
+- [ ] betauia: Setup CI to push images and update argocd
+- [ ] betauia: Use secrets to store db user and password
+- [ ] NSA: Read hardening guide and define what to do

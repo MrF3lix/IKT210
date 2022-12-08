@@ -19,39 +19,34 @@
   - User: admin
   - Password: jpeoYVdQa51oCVCw
 
-
 - Grafana: 
   - http://10.225.149.133:30349/
-  - User: 
-  - Password:
-
+  - User: admin
+  - Password: 7aS6r4mVjigX6LT
 
 - Prometheus: 
   - http://10.225.149.133:30236
-  - User:
-  - Password:
-
+  - User: NONE
+  - Password: NONE
 
 - PWPush: 
   - http://10.225.149.133:30783
-  - User:
-  - Password:
-
+  - User: NONE
+  - Password: NONE
 
 - Kuma: 
   - http://10.225.149.133:30814
   - User: admin
   - Password: K3HnTeGzyfo79itXz2N7
-
+  - Public: http://10.225.149.133:30814/status/public
 
 - Assignment-05-Base: 
-  - http://10.225.149.133:30220
+  - http://10.225.149.133:30169
   - User: felixmsa@uia.no
   - Password Test123#
 
-
 - Betauia.net
-  - ??
+  - http://10.225.149.133:32277
   - User:
   - Password:
 
@@ -425,23 +420,25 @@ TODO:
 
 ## Problem 6.12
 
-1. Couldn't access gitlab docker registry. => Create Secret in cluster `kubectl create secret docker-registry`
-1. Docker images were build on an amd64 platform. Using `docker buildx build --platform linux/amd64` fixed the problem. 
-2. Database is not persistent => No PVC created for it yet.
-3. Could not run the docker build for the betauia.net frontend, `yarn install` failes during image building.
+1. Couldn't access gitlab docker registry. => Create Secret in cluster `kubectl create secret docker-registry` => Replace Docker with kaniko
+2. Docker images were build on an amd64 platform. Using `docker buildx build --platform linux/amd64` fixed the problem. 
+3. Database is not persistent => Create PV and PVC for database
+4. Could not run the docker build for the betauia.net frontend, `yarn install` failes during image building. => Use CI Runner to build the application
 
+# Problem 8.12
 
+1. Dockerbuild doesn't work on shared gitlab ci runners. => Replace Docker with kaniko
 
 ## TODO 8.12
 
-- [ ] Assignment-05-base: Postgres Persistence => PVC
-- [ ] Assignment-05-base: Redis Persistence => PVC
+- [x] Assignment-05-base: Postgres Persistence => PVC
 - [ ] Assignment-05-base: Update Dependencies
-- [ ] Assignment-05-base: Setup CI to push images and update argocd
-- [ ] Assignment-05-base: Use secrets to store db user and password
+- [x] Assignment-05-base: Setup CI to push images and update argocd
+- [x] Assignment-05-base: Use secrets to store db user and password
+- [x] betauia: Redis Persistence => PVC
 - [ ] betauia: Update Dependencies
-- [ ] betauia: Fix yarn build
-- [ ] betauia: Publish frontend docker image
-- [ ] betauia: Setup CI to push images and update argocd
-- [ ] betauia: Use secrets to store db user and password
+- [x] betauia: Fix yarn build
+- [x] betauia: Publish frontend docker image
+- [x] betauia: Setup CI to push images and update argocd
+- [x] betauia: Use secrets to store db user and password
 - [ ] NSA: Read hardening guide and define what to do

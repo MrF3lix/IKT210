@@ -49,7 +49,7 @@
   - Password Test123#
 
 - Betauia.net
-  - http://10.225.149.133:32269
+  - http://10.225.149.133:31375
   - User:
   - Password:
 
@@ -445,3 +445,23 @@ TODO:
 - [x] betauia: Setup CI to push images and update argocd
 - [x] betauia: Use secrets to store db user and password
 - [ ] NSA: Read hardening guide and define what to do
+
+
+## Problem 9.12
+
+
+1. Database initi doesn't work. => No Further Steps to fix it
+```
+Unhandled Exception: System.AggregateException: One or more errors occurred. (The given key '17736' was not present in the dictionary.) ---> System.Collections.Generic.KeyNotFoundException: The given key '17736' was not present in the dictionary.
+```
+
+## Further Improvements
+
+
+- Use version number instead of the latest tag on the docker images
+- Update version number in kustomzie file after a new docker image is pushed to update the cluster automatically
+- Betauia: Fix DB initialization in code
+- Betauia: Update dependencies
+- Assignment-05-Base: Update dependencies
+- Create Network Policies
+- 

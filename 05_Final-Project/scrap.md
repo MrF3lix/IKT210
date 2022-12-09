@@ -14,6 +14,9 @@
 
 ## Applications
 
+- Frontpager:
+  - http://10.225.149.133:31697
+
 - ArgoCD: 
   - https://10.225.149.133:31549/
   - User: admin
@@ -46,7 +49,7 @@
   - Password Test123#
 
 - Betauia.net
-  - http://10.225.149.133:32277
+  - http://10.225.149.133:32269
   - User:
   - Password:
 
